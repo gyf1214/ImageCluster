@@ -5,10 +5,10 @@ Vec *m;
 VecI *mi;
 Vec eigen;
 int n;
-double tmp2[BufSize];
+double tmp2[MaxN];
 
 void pre(FILE *f) {
-    n = input(f, &mi);
+    n = input(f, mi);
     m = new Vec[n];
     eigen.dim = mi[0].dim;
     for (int i = 0; i < n; ++i) {
@@ -18,35 +18,38 @@ void pre(FILE *f) {
     center(m, n);
 }
 
-void work() {
+void work(FILE *f) {
     feature(m, n, eigen);
     for (int i = 0; i < n; ++i) {
         tmp2[i] = m[i] * eigen;
     }
     for (int i = 0; i < n; ++i) {
-        if (tmp2[i] >= .0) printf("%d ", i);
+        if (tmp2[i] >= .0) fprintf(f, "%d ", 1 + i);
     }
-    printf("\n");
+    fprintf(f, "\n");
     for (int i = 0; i < n; ++i) {
-        if (tmp2[i] < .0) printf("%d ", i);
+        if (tmp2[i] < .0) fprintf(f, "%d ", 1 + i);
     }
-    printf("\n");
+    fprintf(f, "\n");
 }
 
 int main(int argc, char **argv) {
-    FILE *f;
-    if (argc >= 2) {
-        f = fopen(argv[1], "r");
-    } else {
-        f = stdin;
-    }
+    FILE *f, *o;
+    const char *path = argc >= 2 ? argv[1] : "test.txt";
+    f = fopen(path, "r");
+    const char *opath = argc >= 3 ? argv[2] : "result.txt";
+    o = fopen(opath, "w");
 
-    if (!f) {
+    if (!f || !o) {
         printf("error!\n");
     } else {
         pre(f);
-        work();
+        work(o);
     }
+
+    delete []m;
+    fclose(f);
+    fclose(o);
 
     return 0;
 }

@@ -11,8 +11,8 @@ clean:
 main: main.o vector.o util.o
 	g++ -o $@ $^
 
-main.o: main.cc vector.hpp util.hpp
+main.o: main.cc vector.hpp util.hpp makefile
 
-vector.o: vector.cc vector.hpp
+vector.o: vector.cc vector.hpp makefile
 
-util.o: util.cc util.hpp
+util.o: util.cc util.hpp makefile

@@ -1,33 +1,16 @@
 #include "util.hpp"
 
-int input(FILE *f, VecI **pm) {
-    *pm = NULL;
-    int t = 0, r = 0, nt = 0, n;
-    int tmp[BufSize];
-    bool flag = false;
-    for (char ch = getc(f); ch != -1; ch = getc(f)) {
-        if (ch >= '0' && ch <= '9') {
-            t = 10 * t + ch - '0';
-            flag = true;
-        } else {
-            if (flag) {
-                tmp[nt++] = t;
-                t = 0;
-                flag = false;
-            }
-            if (ch == '\n') {
-                if (!*pm) {
-                    n = nt;
-                    *pm = new VecI[n];
-                }
-                for (int i = 0; i < nt; ++i) (*pm)[i][r] = tmp[i];
-                ++r;
-                nt = 0;
+static VecI vec[MaxN];
+
+int input(FILE *f, VecI *&pm) {
+    pm = vec;
+    for (int n = 0; n < MaxN; ++n) {
+        for (int i = 0; i < Rows; ++i) {
+            if (fscanf(f, "%d", &vec[n][i]) <= 0) {
+                return n;
             }
         }
+        vec[n].dim = Rows;
     }
-    for (int i = 0; i < n; ++i) {
-        (*pm)[i].dim = r;
-    }
-    return n;
+    return MaxN;
 }

@@ -1,6 +1,6 @@
 #include "vector.hpp"
 #include <cstdio>
 
-const int BufSize = 1024;
+const int MaxN = 25;
 
-int input(FILE *, VecI **);
+int input(FILE *, VecI *&);
